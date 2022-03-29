@@ -1,20 +1,26 @@
 import Categories from "../components/YourNotes/Categories";
 import NoteDisplay from "../components/YourNotes/NoteDisplay";
 import NoteList from "../components/YourNotes/NoteList";
+import Split from "react-split";
 
 function YourNotes() {
   return (
-    <div className=" mx-auto ">
-      <div className="flex justify-between">
-        <div className="w-56 h-screen bg-primary-light">
-          <Categories />
-        </div>
-        <div className="bg-white flex-grow h-screen">
+    <div className=" mx-auto pt-14">
+      <div className="flex   ">
+        <Categories />
+
+        <Split
+          className="flex flex-row splitClass bg-white flex-grow"
+          sizes={[55, 45]}
+          minSize={[400, 400]}
+          gutterSize={4}
+          snapOffset={0}
+          dragInterval={1}
+          direction="horizontal"
+        >
           <NoteList />
-        </div>
-        <div className="bg-white  h-screen w-1/3 border-x-2">
           <NoteDisplay />
-        </div>
+        </Split>
       </div>
     </div>
   );

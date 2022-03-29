@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NoteContext } from "../../context/NoteContext";
+import UtilityBar from "./UtilityBar";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
 import { ReactComponent as CrossIcon } from "../../assets/cross-transparent-bg.svg";
 function NoteItem({ title, id }) {
@@ -21,8 +22,8 @@ function NoteItem({ title, id }) {
   }, [selectedID, id]);
 
   return (
-    <div className="border-t-2 z-10 px-2 py-4 my-4">
-      <div className="h-32 flex ">
+    <div className="border-t-2 z-10 px-2 py-4 my-4 ">
+      <div className="h-32 flex">
         <div className="flex flex-col flex-grow justify-between">
           <div className="mr-1 flex justify-between">
             <TriangleIcon
@@ -58,6 +59,7 @@ function NoteItem({ title, id }) {
           </div>
         </div>
       </div>
+      <UtilityBar id={id} />
     </div>
   );
 }
@@ -67,14 +69,3 @@ NoteItem.defaultProps = {
 };
 
 export default NoteItem;
-
-{
-  /* <div className="h-32 my-8 bg-slate-100 flex z-10">
-      <div className="flex flex-col flex-grow justify-between">
-        <div className="p-1">{title}</div>
-        <div className="p-1 bg-orange-300 opacity-20 flex flex-grow"></div>
-        <div className="p-1">Stats</div>
-      </div>
-      <div className="w-32 bg-slate-400 align-middle text-center">Picture</div>
-</div> */
-}

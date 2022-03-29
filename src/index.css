@@ -7,15 +7,47 @@
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
-  /* color: #b1b1b1; */
 }
-/* .triangle-play-button {
-  width: 0;
-  height: 0;
-  border-top: 13px solid transparent;
-  border-bottom: 13px solid transparent;
-  border-left: 20px solid #00adb5;
+
+.splitClass {
+  /* width: 1400px; */
+  height: calc(100vh - 3.5rem);
 }
-.triangle-play-button:hover {
-  cursor: pointer;
-} */
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  position: relative;
+  left: 2px;
+}
+.email-SVG {
+  background-image: url(./assets/email-icon.svg);
+  background-size: 13px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-position-x: 6px;
+  opacity: 75%;
+}
+.username-SVG {
+  background-image: url(./assets/username-icon.svg);
+  background-size: 13px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-position-x: 6px;
+  opacity: 75%;
+}
+
+.password-SVG {
+  background-image: url(./assets/password-icon.svg);
+  background-size: 13px;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-position-x: 6px;
+  opacity: 75%;
+}
+.facebook-shadow {
+  box-shadow: 0 1px 5px 6px rgba(0, 0, 0, 0.035);
+  padding-top: 13.5px;
+}
+.google-shadow {
+  box-shadow: 0 1px 5px 6px rgba(0, 0, 0, 0.035);
+  padding-top: 10px;
+}

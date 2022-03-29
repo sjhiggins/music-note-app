@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 const dummyData = [
   {
     id: 1,
@@ -7,18 +8,21 @@ const dummyData = [
     imgUrl:
       "https://images.unsplash.com/photo-1515405295579-ba7b45403062?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
     length: 177,
-    notes: [
+    comments: [
       {
-        note: "Intro with horns and violins",
+        comment: "Intro with horns and violins",
         timeStamp: 0.5,
+        id: uuidv4(),
       },
       {
-        note: "Rolling bassline comes in",
+        comment: "Rolling bassline comes in",
         timeStamp: 31,
+        id: uuidv4(),
       },
       {
-        note: "Big Drop",
+        comment: "Big Drop",
         timeStamp: 115,
+        id: uuidv4(),
       },
     ],
     timeStamp: new Date("March 2, 2022 at 12:30:26 PM UTC"),
@@ -33,18 +37,21 @@ const dummyData = [
     imgUrl:
       "https://images.unsplash.com/photo-1515405295579-ba7b45403062?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
     length: 155,
-    notes: [
+    comments: [
       {
-        note: "Big Horn and subtle clicks",
+        comment: "Big Horn and subtle clicks",
         timeStamp: 5,
+        id: uuidv4(),
       },
       {
-        note: "Big man shouting here",
+        comment: "Big man shouting here",
         timeStamp: 30,
+        id: uuidv4(),
       },
       {
-        note: "Beautiful Singing",
+        comment: "Beautiful Singing",
         timeStamp: 90,
+        id: uuidv4(),
       },
     ],
     timeStamp: new Date("March 3, 2022 at 14:33:26 PM UTC"),
