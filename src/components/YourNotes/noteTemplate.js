@@ -11,7 +11,7 @@ class noteTemplate {
     this.length = "180";
     this.comments = [];
     this.timeStamp = new Date();
-    this.userRef = "HfbP11F2osO0vCZHIvpJROQWetL2";
+    // this.userRef = "HfbP11F2osO0vCZHIvpJROQWetL2";
   }
 }
 

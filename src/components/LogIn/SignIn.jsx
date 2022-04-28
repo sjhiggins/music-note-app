@@ -1,15 +1,35 @@
 import React, { useContext, useState } from "react";
 import { NoteContext } from "../../context/NoteContext";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ReactComponent as FacebookIcon } from "../../assets/facebook-f-logo.svg";
 import { ReactComponent as GoogleIcon } from "../../assets/google-g-logo.svg";
 function SignIn() {
-  const { setAccountStatus } = useContext(NoteContext);
+  const { setAccountStatus, fetchTracks } = useContext(NoteContext);
 
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        setAccountStatus((prev) => ({
+          ...prev,
+          signingIn: false,
+          creatingAccount: false,
+        }));
+      }
+      fetchTracks();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -47,7 +67,7 @@ function SignIn() {
               className="m-3 px-7 border-b-2 p-1 email-SVG bg-gray-50"
               type="text"
               placeholder="Email"
-              value={Email}
+              value={email}
               onChange={handleEmailChange}
             />
             <input
@@ -67,7 +87,7 @@ function SignIn() {
             Sign In
           </button>
           <button
-            className=" py-1 my-3 rounded-sm w-72 mx-auto opacity-80 text-sm"
+            className=" py-1 my-3 rounded-sm w-72 mx-auto opacity-80 text-sm hover:text-primary-turqoise"
             onClick={handleCreateAccount}
           >
             Don't have an account?

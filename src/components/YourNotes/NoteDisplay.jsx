@@ -5,25 +5,25 @@ import { NoteContext } from "../../context/NoteContext";
 function NoteDisplay() {
   const [noteTitle, setNoteTitle] = useState("Write a note to get started!");
   const [noteComments, setNoteComments] = useState([]);
-  const { selectedID, notes } = useContext(NoteContext);
+  const { selectedID, tracksData } = useContext(NoteContext);
 
   // if selected id then title and comments are displayed
   useEffect(() => {
     if (selectedID) {
       setNoteTitle(
-        notes.map((note) => {
-          if (note.id === selectedID) {
-            return note.title;
+        tracksData.map((track) => {
+          if (track.id === selectedID) {
+            return track.title;
           } else {
             return null;
           }
         })
       );
 
-      let currentComments = notes
-        .map((note) => {
-          if (note.id === selectedID) {
-            return note.comments;
+      let currentComments = tracksData
+        .map((track) => {
+          if (track.id === selectedID) {
+            return track.comments;
           } else {
             return null;
           }
@@ -31,7 +31,7 @@ function NoteDisplay() {
         .find((x) => x !== null);
       setNoteComments(currentComments);
     }
-  }, [selectedID, notes]);
+  }, [selectedID, tracksData]);
 
   return (
     <div className="py-3  border-l-2 ">
@@ -42,7 +42,7 @@ function NoteDisplay() {
         {noteComments.map((comment) => (
           <Comment
             comment={comment.comment}
-            timeStamp={comment.timeStamp}
+            timeStamp={comment.cTimeStamp}
             key={comment.id}
           />
         ))}

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import SignUp from "../components/SignIn/SignUp";
-import SignIn from "../components/SignIn/SignIn";
+import SignUp from "../components/LogIn/SignUp";
+import SignIn from "../components/LogIn/SignIn";
 import { NoteContext } from "../context/NoteContext";
 
 function LogIn() {

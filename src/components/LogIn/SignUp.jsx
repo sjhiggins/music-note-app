@@ -1,25 +1,71 @@
 import React, { useContext, useState } from "react";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase.config";
 import { NoteContext } from "../../context/NoteContext";
 function SignUp() {
   const { setAccountStatus } = useContext(NoteContext);
-
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [formData, setFormData] = useState({});
 
-  const handleSubmit = (e) => {
+  // firebase code
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  };
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      updateProfile(auth.currentUser, {
+        displayName: username,
+      });
 
+      setAccountStatus((prev) => ({
+        ...prev,
+        signingIn: false,
+        creatingAccount: false,
+      }));
+      // saving to firebase data storage
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      email: e.target.value,
+    }));
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      password: e.target.value,
+    }));
   };
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      username: e.target.value,
+    }));
   };
+  console.log(formData);
   const handleCancel = () => {
     setAccountStatus((prev) => ({
       ...prev,
@@ -56,7 +102,7 @@ function SignUp() {
               className="m-3 px-7 border-b-2 p-1 email-SVG bg-gray-50"
               type="text"
               placeholder="Email"
-              value={Email}
+              value={email}
               onChange={handleEmailChange}
             />
             <input

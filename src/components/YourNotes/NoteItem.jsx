@@ -3,7 +3,7 @@ import { NoteContext } from "../../context/NoteContext";
 import UtilityBar from "./UtilityBar";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
 import { ReactComponent as CrossIcon } from "../../assets/cross-transparent-bg.svg";
-function NoteItem({ title, id }) {
+function NoteItem({ title, id, trackData }) {
   const { setSelectedID, selectedID } = useContext(NoteContext);
   const [textHighlight, setTextHighlight] = useState("");
 
@@ -59,7 +59,7 @@ function NoteItem({ title, id }) {
           </div>
         </div>
       </div>
-      <UtilityBar id={id} />
+      <UtilityBar id={id} trackData={trackData} />
     </div>
   );
 }

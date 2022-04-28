@@ -1,16 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import NoteItem from "./NoteItem";
 import NoteItemForm from "./NoteItemForm";
 import { NoteContext } from "../../context/NoteContext";
+import { getAuth } from "firebase/auth";
 
 function NoteList() {
-  const { isCreatingNote, notes } = useContext(NoteContext);
+  const { isCreatingNote, tracksData, fetchTracks } = useContext(NoteContext);
+  const auth = getAuth();
+
+  // Fetch Tracks
+  useEffect(() => {
+    if (auth.currentUser) {
+      fetchTracks();
+    }
+  }, []);
 
   return (
     <div className="p-4">
       {isCreatingNote && <NoteItemForm />}
-      {notes.map((item) => {
-        return <NoteItem title={item.title} key={item.id} id={item.id} />;
+      {tracksData.map((item) => {
+        return (
+          <NoteItem
+            title={item.title}
+            key={item.id}
+            id={item.id}
+            trackData={item}
+          />
+        );
       })}
     </div>
   );

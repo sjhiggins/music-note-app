@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react";
 import { NoteContext } from "../../context/NoteContext";
-import Button from "../UI/Button";
 import noteTemplate from "./noteTemplate";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
 import { ReactComponent as CrossIcon } from "../../assets/cross-transparent-bg.svg";
-
 function NoteItemForm() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
-  const { setNotes, setIsCreatingNote } = useContext(NoteContext);
+  const { setIsCreatingNote, handleTrackAdd } = useContext(NoteContext);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -18,23 +16,19 @@ function NoteItemForm() {
     }
   };
 
-  const handleCreateNote = (event) => {
-    event.preventDefault();
-    //using enetered title with note data template
+  const handleCreateNote = async () => {
     let newNote = new noteTemplate(title);
-
+    newNote = { ...newNote };
     //error handling
     if (title.trim().length < 1) {
       setError("bg-red-200 placeholder-white");
       return;
     }
-    // passing new note to context
-    setNotes((prev) => {
-      return [newNote, ...prev];
-    });
+    handleTrackAdd(newNote);
     //unshowing note form
     setIsCreatingNote(false);
   };
+
   const handleCancelNote = (event) => {
     event.preventDefault();
     setIsCreatingNote(false);
