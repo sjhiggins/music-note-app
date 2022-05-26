@@ -25,6 +25,7 @@ function NoteList() {
             key={item.id}
             id={item.id}
             trackData={item}
+            audioURL={item.audioURL}
           />
         );
       })}

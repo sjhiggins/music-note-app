@@ -39,6 +39,7 @@ function NoteDisplay() {
         <div className="font-medium tracking-wide opacity-90">{noteTitle}</div>
       </div>
       <div className="h-96 w-auto bg-slate-50 p-4">
+        {/* <input type="text" width="max" height="max" /> */}
         {noteComments.map((comment) => (
           <Comment
             comment={comment.comment}

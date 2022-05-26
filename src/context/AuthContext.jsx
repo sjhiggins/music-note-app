@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
     isLoggedIn,
     isCheckingLogStatus,
   };
-  console.log(["logged in? ", isLoggedIn]);
-  console.log(["checkingStatus ", isCheckingLogStatus]);
+  // console.log(["logged in? ", isLoggedIn]);
+  // console.log(["checkingStatus ", isCheckingLogStatus]);
 
   return (
     <AuthContext.Provider value={AuthContextObj}>

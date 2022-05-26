@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { getAuth } from "firebase/auth";
+import useWindowDimensions from "../components/hooks/useWindowDimensions";
 
 export const NoteContext = createContext();
 
@@ -23,6 +24,7 @@ export const NoteProvider = ({ children }) => {
     creatingAccount: false,
     postingTrack: false,
   });
+  const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 
   //Lift delete function to context to avoid error
   const auth = getAuth();
@@ -116,6 +118,8 @@ export const NoteProvider = ({ children }) => {
     handleTrackDelete,
     handleTrackAdd,
     fetchTracks,
+    windowHeight,
+    windowWidth,
   };
 
   return (

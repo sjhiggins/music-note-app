@@ -1,20 +1,45 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NoteContext } from "../../context/NoteContext";
+import Artwork from "./Artwork";
 import UtilityBar from "./UtilityBar";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
-import { ReactComponent as CrossIcon } from "../../assets/cross-transparent-bg.svg";
-function NoteItem({ title, id, trackData }) {
+// import WaveForm from "./WaveFormOld";
+import Waveform from "./Waveform";
+import WaveformFunc from "./WaveformFunc";
+import { getAuth } from "firebase/auth";
+
+function NoteItem({ title, id, trackData, audioURL }) {
   const { setSelectedID, selectedID } = useContext(NoteContext);
   const [textHighlight, setTextHighlight] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const auth = getAuth();
 
+  // set selected Track
   const handleNoteSelection = () => {
     setSelectedID(id);
   };
 
+  // could need this fetch storage code later
+
+  // const fetchStorage = async () => {
+  //   const storage = getStorage();
+  //   const pathReference = ref(storage, `audio/${auth.currentUser.uid}/${id}`);
+
+  //   getDownloadURL(pathReference).then((url) => {
+  //     console.log(url);
+  //     setAudioSource(url);
+  //     setShowWf(true);
+  //   });
+  // };
+
+  // highlight text color if selected
   useEffect(() => {
     if (selectedID === id) {
       // selected title color
       setTextHighlight("text-black");
+      // fetch storage
+      // fetchStorage();
+      console.log("selected :", selectedID);
     } else if (selectedID !== id) {
       // non selected title color
       setTextHighlight("text-gray-800");
@@ -23,7 +48,7 @@ function NoteItem({ title, id, trackData }) {
 
   return (
     <div className="border-t-2 z-10 px-2 py-4 my-4 ">
-      <div className="h-32 flex">
+      <div className="h-36 flex">
         <div className="flex flex-col flex-grow justify-between">
           <div className="mr-1 flex justify-between">
             <TriangleIcon
@@ -39,25 +64,14 @@ function NoteItem({ title, id, trackData }) {
               {title}
             </div>
           </div>
-          <div className="p-6 opacity-20 flex flex-grow ">
-            <CrossIcon
-              fill="#g1g1g1"
-              width="25px"
-              height="25px"
-              className="m-auto hover:cursor-pointer hover:fill-slate-500"
-            />
+          <div className="px-2  flex flex-grow ">
+            {/* <audio className="m-auto" src={audioURL} controls></audio> */}
+            {/* <Waveform audioURL={audioURL} /> */}
+            <WaveformFunc audioURL={audioURL} />
           </div>
+          {/* {audioURL && <WaveForm audioURL={audioURL} />} */}
         </div>
-        <div className="w-28 h-28 bg-slate-100 flex flex-col my-auto">
-          <div className="m-auto">
-            <CrossIcon
-              fill="#b1b1b1"
-              width="25px"
-              height="25px"
-              className="m-auto hover:cursor-pointer hover:fill-slate-500"
-            />
-          </div>
-        </div>
+        <Artwork />
       </div>
       <UtilityBar id={id} trackData={trackData} />
     </div>

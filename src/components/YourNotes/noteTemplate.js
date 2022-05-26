@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 class noteTemplate {
   constructor(title) {
     this.title = title;
-    this.id = uuidv4();
+    // this.id = uuidv4();
     this.bpm = "";
     this.categories = [];
     this.hasAudio = false;
@@ -11,7 +11,6 @@ class noteTemplate {
     this.length = "180";
     this.comments = [];
     this.timeStamp = new Date();
-    // this.userRef = "HfbP11F2osO0vCZHIvpJROQWetL2";
   }
 }
 
