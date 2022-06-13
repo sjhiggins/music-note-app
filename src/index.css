@@ -78,3 +78,13 @@
   cursor: pointer;
   padding-bottom: 3px;
 }
+.widthInherit {
+  width: inherit;
+  /* width: 38vw; */
+  /* width: calc(100% - 777px); */
+  height: 100%;
+}
+.displayHeight {
+  height: calc(100% - 100px);
+  width: inherit;
+}

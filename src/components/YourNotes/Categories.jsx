@@ -2,7 +2,7 @@ import React from "react";
 
 function Categories() {
   return (
-    <div className="p-4 text-white w-48 bg-primary-light">
+    <div className="p-4 text-white w-auto bg-primary-light ">
       <div className="tracking-wide flex justify-center">
         <div className="flex">
           <h2 className="mr-2">Categories</h2>

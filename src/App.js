@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Profile from "./pages/Profile";
 import LogIn from "./pages/LogIn";
 import YourNotes from "./pages/YourNotes";
+import PlaybackBar from "./pages/PlaybackBar";
 import { NoteContext } from "./context/NoteContext";
 import { AuthContext } from "./context/AuthContext";
 import Navbar from "./components/Navbar/Navbar";
@@ -19,10 +20,13 @@ function App() {
         {isCheckingLogStatus ? (
           <p>Checking Log Status</p>
         ) : (
-          <Routes>
-            <Route path="/" element={<YourNotes />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
-          </Routes>
+          <>
+            <Routes>
+              <Route path="/" element={<YourNotes />}></Route>
+              <Route path="/profile" element={<Profile />}></Route>
+            </Routes>
+            <PlaybackBar />
+          </>
         )}
       </Router>
     </div>

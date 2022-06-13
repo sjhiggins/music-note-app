@@ -16,9 +16,10 @@ function NoteItemForm() {
   const [error, setError] = useState("");
   const [progressBar, setProgressBar] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [taskCancel, setTaskCancel] = useState(false);
   const [audioURL, setAudioURL] = useState("");
-  // disabled here means the submission of tracks is disabled, not the publish of form
+  // disabled here means the submission of tracks is disabled, not the publish of form. Opositre. (confusing must change)
   const [disabled, setDisabled] = useState(false);
   const [trackID, setTrackID] = useState(null);
   const { setIsCreatingNote, handleTrackAdd } = useContext(NoteContext);
@@ -29,6 +30,11 @@ function NoteItemForm() {
     // error handling
     if (e.target.value.length > 1) {
       setError("");
+      setDisabled(true);
+    }
+    if (e.target.value.length > 110) {
+      setError("bg-red-200 placeholder-white");
+      setDisabled(false);
     }
   };
   //function to store audio in firebase
@@ -74,6 +80,7 @@ function NoteItemForm() {
             // have code to push download url to the track info/data
 
             setIsLoading(false);
+            setLoaded(true);
           });
         }
       );
@@ -143,27 +150,33 @@ function NoteItemForm() {
                   onChange={handleTitleChange}
                 />
               </div>
-              <form className="p-6 text-sm flex flex-grow bg-slate-100">
-                <label
-                  htmlFor="audio"
-                  className={`bg-slate-200 ${
-                    !disabled && "cursor-pointer"
-                  } m-auto`}
-                >
-                  {disabled && isLoading && "Uploading track"}
-                  {!disabled && !isLoading && "Upload Audio"}
-                  {disabled && !isLoading && "Ready to post"}
-                  <input
-                    className="m-auto hidden"
-                    type="file"
-                    max="1"
-                    accept=".mp3,.wav"
-                    id="audio"
-                    onChange={handleAudioFileChange}
-                    disabled={disabled}
-                  />
-                </label>
-              </form>
+              {loaded ? (
+                <h1 className="p-6 text-sm flex flex-grow bg-slate-100">
+                  Ready to post
+                </h1>
+              ) : (
+                <form className="p-6 text-sm flex flex-grow bg-slate-100">
+                  <label
+                    htmlFor="audio"
+                    className={`bg-slate-200 ${
+                      !disabled && "cursor-pointer"
+                    } m-auto`}
+                  >
+                    {disabled && isLoading && "Uploading track"}
+                    {!disabled && !isLoading && "Upload Audio"}
+                    {disabled && !isLoading && "Ready to post"}
+                    <input
+                      className="m-auto hidden"
+                      type="file"
+                      max="1"
+                      accept=".mp3,.wav"
+                      id="audio"
+                      onChange={handleAudioFileChange}
+                      disabled={disabled}
+                    />
+                  </label>
+                </form>
+              )}
             </div>
 
             <div className="w-28 h-28 bg-slate-100 flex flex-col my-auto">

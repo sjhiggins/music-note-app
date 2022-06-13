@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import WaveSurfer from "wavesurfer.js";
 
-function WaveForm({ audioURL }) {
+function WaveForm({ audioURL, isPlaying }) {
   const [playing, setPlaying] = useState(false);
-
-  //   componentDidMount() {
-  // const track = document.querySelector("#track");
 
   const waveformRef = useRef(null);
 
@@ -26,31 +23,22 @@ function WaveForm({ audioURL }) {
     waveformRef.current.load(audioURL);
   }, []);
 
-  //     this.waveform.load(track);
-  //   }
-
-  const handlePlay = () => {
-    // setPlaying(!playing);
-    if (!waveformRef.current.isPlaying()) {
-      waveformRef.current.play();
+  useEffect(() => {
+    if (isPlaying) {
       setPlaying(true);
+      waveformRef.current.play();
     } else {
-      waveformRef.current.pause();
       setPlaying(false);
+      waveformRef.current.pause();
     }
-  };
+  }, [isPlaying]);
 
   const url = audioURL
     ? audioURL
     : "https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3";
 
-  console.log(url);
-
   return (
     <div className="waveform-container">
-      <button className="play-button" onClick={handlePlay}>
-        {!playing ? "Play" : "Pause"}
-      </button>
       <div className="wave" id="waveform" ref={waveformRef}></div>
       <audio src={url} id="track"></audio>
     </div>

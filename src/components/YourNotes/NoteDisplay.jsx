@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
+import NoteDisplayInput from "./NoteDisplayInput";
 import Comment from "./Comment";
 import { NoteContext } from "../../context/NoteContext";
 
 function NoteDisplay() {
   const [noteTitle, setNoteTitle] = useState("Write a note to get started!");
   const [noteComments, setNoteComments] = useState([]);
-  const { selectedID, tracksData } = useContext(NoteContext);
+  const { selectedID, tracksData, windowWidth } = useContext(NoteContext);
+  const [paddingFix, setPaddingFix] = useState({ paddingRight: "86.4px" });
 
   // if selected id then title and comments are displayed
   useEffect(() => {
@@ -33,13 +35,26 @@ function NoteDisplay() {
     }
   }, [selectedID, tracksData]);
 
+  // funciton to fix css depending on width of screen
+  useEffect(() => {
+    if (windowWidth <= 1150) {
+      setPaddingFix({});
+    }
+    if (windowWidth > 1150) {
+      setPaddingFix({ paddingRight: "86.4px" });
+    }
+  }, [windowWidth]);
+
   return (
-    <div className="py-3  border-l-2 ">
-      <div className="p-4 bg-slate-200">
-        <div className="font-medium tracking-wide opacity-90">{noteTitle}</div>
+    <div
+      // key={paddingFix}
+      className="flex flex-col displayHeight fixed pt-3 border-l-2"
+      style={paddingFix}
+    >
+      <div className="p-4 bg-slate-200 w-full">
+        <div className=" font-medium opacity-90 ">{noteTitle}</div>
       </div>
-      <div className="h-96 w-auto bg-slate-50 p-4">
-        {/* <input type="text" width="max" height="max" /> */}
+      <div className=" bg-slate-50 p-4 h-full mb-10">
         {noteComments.map((comment) => (
           <Comment
             comment={comment.comment}
@@ -47,6 +62,9 @@ function NoteDisplay() {
             key={comment.id}
           />
         ))}
+      </div>
+      <div className="bg-gray-200 absolute bottom-0 w-full" style={paddingFix}>
+        <NoteDisplayInput />
       </div>
     </div>
   );

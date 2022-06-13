@@ -15,6 +15,7 @@ function NoteList() {
     }
   }, []);
 
+  // p-4 w-7/12 flex flex-col bg-white flex-grow ml-48 z-0
   return (
     <div className="p-4">
       {isCreatingNote && <NoteItemForm />}

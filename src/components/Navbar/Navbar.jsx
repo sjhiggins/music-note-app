@@ -59,17 +59,17 @@ function Navbar() {
               </div>
             ) : (
               <div className="w-[275px] h-14 flex justify-center">
-                {/* <li className="p-4 flex align-middle  hover:cursor-pointer">
+                <li className=" m-auto flex align-middle  hover:cursor-pointer">
+                  <NotificationIcon fill="rgb(230, 230, 230)" width="17px" />
+                </li>
+                <li className="p-4 flex align-middle  hover:cursor-pointer">
                   <MessageIcon fill="rgb(230, 230, 230)" width="18px" />
-                </li> */}
+                </li>
 
                 <li className="pl-4 m-auto flex ">
                   <Link to="/profile">
                     <ProfileDropdown />
                   </Link>
-                </li>
-                <li className=" m-auto flex align-middle  hover:cursor-pointer">
-                  <NotificationIcon fill="rgb(230, 230, 230)" width="17px" />
                 </li>
               </div>
             )}
