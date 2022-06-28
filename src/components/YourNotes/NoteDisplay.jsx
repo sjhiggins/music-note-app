@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
+import { NoteContext } from "../../context/NoteContext";
 import NoteDisplayInput from "./NoteDisplayInput";
 import Comment from "./Comment";
-import { NoteContext } from "../../context/NoteContext";
+import "../../CSS/NoteDisplay.css";
 
 function NoteDisplay() {
   const [noteTitle, setNoteTitle] = useState("Write a note to get started!");
   const [noteComments, setNoteComments] = useState([]);
+  const [noteRef, setNoteRef] = useState("");
   const { selectedID, tracksData, windowWidth } = useContext(NoteContext);
   const [paddingFix, setPaddingFix] = useState({ paddingRight: "86.4px" });
 
@@ -15,6 +17,7 @@ function NoteDisplay() {
       setNoteTitle(
         tracksData.map((track) => {
           if (track.id === selectedID) {
+            setNoteRef(track.docRef);
             return track.title;
           } else {
             return null;
@@ -44,7 +47,6 @@ function NoteDisplay() {
       setPaddingFix({ paddingRight: "86.4px" });
     }
   }, [windowWidth]);
-
   return (
     <div
       // key={paddingFix}
@@ -64,7 +66,7 @@ function NoteDisplay() {
         ))}
       </div>
       <div className="bg-gray-200 absolute bottom-0 w-full" style={paddingFix}>
-        <NoteDisplayInput />
+        <NoteDisplayInput noteRef={noteRef} />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ function NoteItemForm() {
   const [loaded, setLoaded] = useState(false);
   const [taskCancel, setTaskCancel] = useState(false);
   const [audioURL, setAudioURL] = useState("");
-  // disabled here means the submission of tracks is disabled, not the publish of form. Opositre. (confusing must change)
+  // disabled here means the submission of tracks is disabled, not the publish of form. Oposite. (confusing must change)
   const [disabled, setDisabled] = useState(false);
   const [trackID, setTrackID] = useState(null);
   const { setIsCreatingNote, handleTrackAdd } = useContext(NoteContext);
@@ -53,7 +53,9 @@ function NoteItemForm() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
           setProgressBar(Math.round(progress));
+
           console.log("Upload is " + progress + "% done");
 
           switch (snapshot.state) {
@@ -124,11 +126,12 @@ function NoteItemForm() {
     storeAudio(audioFile);
     setDisabled(true);
     setTitle(e.target.files[0].name);
+    console.log("bar should move");
   };
 
   return (
     <>
-      <div className="w-20 h-6 bg-primary-turqoise-500 rounded-t-lg text-white text-sm pt-0.5 text-center relative top-0.5">
+      <div className="w-20 h-6 bg-primary-turqoise-500 rounded-t-lg text-white text-sm pt-0.5 text-center relative ">
         New Note
       </div>
       <div className="border-t-2 border-primary-turqoise z-10 px-2 py-4">
@@ -179,7 +182,7 @@ function NoteItemForm() {
               )}
             </div>
 
-            <div className="w-28 h-28 bg-slate-100 flex flex-col my-auto">
+            {/* <div className="w-28 h-28 bg-slate-100 flex flex-col my-auto">
               <div className="m-auto">
                 <CrossIcon
                   fill="#b1b1b1"
@@ -188,13 +191,16 @@ function NoteItemForm() {
                   className="m-auto hover:cursor-pointer hover:fill-slate-500"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="bg-slate-300 w-full h-full ">{progressBar}</div>
-          {/* <div className={`bg-black h-1 w-[${progressBar}px]`}></div> */}
+          <div
+            key={progressBar}
+            className={`bg-primary-turqoise-500 h-3 w-[${progressBar}px]`}
+          ></div>
           <div className="flex justify-end">
             <div
-              className="text-lg hover:cursor-pointer text-gray-500 mr-4"
+              className="text-lg hover:cursor-pointer text-rose-400 mr-4"
               onClick={handleCancelNote}
             >
               Cancel

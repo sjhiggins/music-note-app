@@ -5,15 +5,23 @@ import UtilityBar from "./UtilityBar";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
 import { ReactComponent as PauseIcon } from "../../assets/pause-transparent-icon-v1-bg.svg";
 import WaveformFunc from "./WaveformFunc";
-import { getAuth } from "firebase/auth";
 
 function NoteItem({ title, id, trackData, audioURL }) {
-  const { setSelectedID, selectedID } = useContext(NoteContext);
+  const {
+    setSelectedID,
+    selectedID,
+    setTrackPlaying,
+    trackPlaying,
+    setWaveformReference,
+  } = useContext(NoteContext);
   const [textHighlight, setTextHighlight] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [aURL, setAURL] = useState(audioURL);
-  const auth = getAuth();
+  const docRef = trackData.docRef;
 
+  const grabWaveRef = (ref) => {
+    setWaveformReference(ref);
+  };
   // set selected Track
   const handleNoteSelection = () => {
     setSelectedID(id);
@@ -28,17 +36,32 @@ function NoteItem({ title, id, trackData, audioURL }) {
       setTextHighlight("text-gray-800");
     }
   }, [selectedID, id]);
-
+  // backupUrl incase of error
   useEffect(() => {
     if (!audioURL) {
       setAURL("https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3");
     }
   }, []);
 
+  // handle switching data in context for playing track
   const handlePlay = () => {
-    setIsPlaying(!isPlaying);
+    setTrackPlaying((prev) => ({
+      ...prev,
+      isPlaying: !isPlaying,
+      trackRef: docRef,
+      title: title,
+      id: id,
+    }));
     setSelectedID(id);
   };
+  // handle if showing play or pause button for each track
+  useEffect(() => {
+    if (trackPlaying.trackRef === docRef && trackPlaying.isPlaying === true) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [trackPlaying, docRef]);
 
   return (
     <div className="border-t-2 z-10 px-2 py-4 my-4 ">
@@ -70,7 +93,13 @@ function NoteItem({ title, id, trackData, audioURL }) {
             </div>
           </div>
           <div className="px-2   ">
-            <WaveformFunc audioURL={aURL} isPlaying={isPlaying} />
+            <WaveformFunc
+              audioURL={aURL}
+              isPlaying={isPlaying}
+              trackPlaying={trackPlaying}
+              trackRef={docRef}
+              grabWaveRef={grabWaveRef}
+            />
           </div>
         </div>
         {/* <Artwork /> */}

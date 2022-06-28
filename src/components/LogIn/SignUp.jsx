@@ -7,6 +7,7 @@ import {
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { NoteContext } from "../../context/NoteContext";
+import "../../CSS/LogIn.css";
 function SignUp() {
   const { setAccountStatus } = useContext(NoteContext);
   const [email, setEmail] = useState("");

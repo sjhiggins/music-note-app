@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
+import { NoteContext } from "../../context/NoteContext";
+import "../../CSS/WaveformFunc.css";
 import WaveSurfer from "wavesurfer.js";
 
-function WaveForm({ audioURL, isPlaying }) {
-  const [playing, setPlaying] = useState(false);
+function WaveForm({ audioURL, trackPlaying, trackRef, grabWaveRef }) {
+  const { setWaveformReference } = useContext(NoteContext);
 
   const waveformRef = useRef(null);
 
+  // wavesurfer instance created when page loads
   useEffect(() => {
     waveformRef.current = WaveSurfer.create({
       barWidth: 3,
@@ -19,20 +22,28 @@ function WaveForm({ audioURL, isPlaying }) {
       waveColor: "#EFEFEF",
       cursorColor: "transparent",
       scrollParent: false,
+      hideScrollbar: true,
+      mediaControls: true,
     });
     waveformRef.current.load(audioURL);
+    grabWaveRef(waveformRef);
   }, []);
 
+  // useEffect forcing context to commit to a single track playing at a time
   useEffect(() => {
-    if (isPlaying) {
-      setPlaying(true);
+    if (trackPlaying.isPlaying && trackPlaying.trackRef === trackRef) {
       waveformRef.current.play();
+      setWaveformReference(waveformRef);
+      waveformRef.current.setProgressColor("#00ADB5");
     } else {
-      setPlaying(false);
       waveformRef.current.pause();
     }
-  }, [isPlaying]);
+    if (trackPlaying.trackRef !== trackRef) {
+      waveformRef.current.setProgressColor("rgb(205, 205, 205)");
+    }
+  }, [trackPlaying, trackRef]);
 
+  // fallback url incase of error
   const url = audioURL
     ? audioURL
     : "https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3";

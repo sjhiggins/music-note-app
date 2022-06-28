@@ -8,6 +8,10 @@ import {
   query,
   orderBy,
   limit,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { getAuth } from "firebase/auth";
@@ -17,8 +21,16 @@ export const NoteContext = createContext();
 
 export const NoteProvider = ({ children }) => {
   const [isCreatingNote, setIsCreatingNote] = useState(false);
-  const [selectedID, setSelectedID] = useState("");
+  const [selectedID, setSelectedID] = useState(0);
   const [tracksData, setTracksData] = useState([]);
+  const [trackPlaying, setTrackPlaying] = useState({
+    isPlaying: false,
+    progress: null,
+    duration: 0,
+    title: "",
+    id: "",
+  });
+  const [waveformReference, setWaveformReference] = useState(null);
   const [accountStatus, setAccountStatus] = useState({
     signingIn: false,
     creatingAccount: false,
@@ -106,6 +118,35 @@ export const NoteProvider = ({ children }) => {
     }
   };
 
+  const handlePublishComment = async (
+    comment,
+    trackRef,
+    commentID,
+    commentTime
+  ) => {
+    if (auth.currentUser) {
+      try {
+        const commentTrackRef = doc(
+          db,
+          "users",
+          auth.currentUser.uid,
+          "trackData",
+          trackRef
+        );
+        await updateDoc(commentTrackRef, {
+          comments: arrayUnion({
+            cTimeStamp: commentTime,
+            comment: comment,
+            id: commentID,
+          }),
+        });
+        console.log("done");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const NoteContextObj = {
     isCreatingNote,
     setIsCreatingNote,
@@ -120,6 +161,11 @@ export const NoteProvider = ({ children }) => {
     fetchTracks,
     windowHeight,
     windowWidth,
+    handlePublishComment,
+    trackPlaying,
+    setTrackPlaying,
+    waveformReference,
+    setWaveformReference,
   };
 
   return (

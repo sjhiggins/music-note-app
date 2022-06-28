@@ -1,0 +1,4 @@
+.displayHeight {
+  height: calc(100% - 100px);
+  width: inherit;
+}
