@@ -47,6 +47,7 @@ function NoteDisplay() {
       setPaddingFix({ paddingRight: "86.4px" });
     }
   }, [windowWidth]);
+  console.log(noteComments);
   return (
     <div
       // key={paddingFix}
@@ -54,19 +55,26 @@ function NoteDisplay() {
       style={paddingFix}
     >
       <div className="p-4 bg-slate-200 w-full">
-        <div className=" font-medium opacity-90 ">{noteTitle}</div>
+        <div className=" font-medium opacity-90 h-6">{noteTitle}</div>
       </div>
-      <div className=" bg-slate-50 p-4 h-full mb-10">
-        {noteComments.map((comment) => (
-          <Comment
-            comment={comment.comment}
-            timeStamp={comment.cTimeStamp}
-            key={comment.id}
-          />
-        ))}
+      <div className=" bg-slate-50 p-4 h-full mb-10 overflow-auto scrollbar-hide ">
+        {noteComments
+          ? noteComments.map((comment) => (
+              <Comment
+                comment={comment.comment}
+                timeStamp={comment.cTimeStamp}
+                key={comment.id}
+                id={comment.id}
+                noteRef={noteRef}
+                selectedID={selectedID}
+                noteComments={noteComments}
+                setNoteComments={setNoteComments}
+              />
+            ))
+          : ""}
       </div>
       <div className="bg-gray-200 absolute bottom-0 w-full" style={paddingFix}>
-        <NoteDisplayInput noteRef={noteRef} />
+        <NoteDisplayInput noteRef={noteRef} setNoteComments={setNoteComments} />
       </div>
     </div>
   );

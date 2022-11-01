@@ -2,16 +2,15 @@ import { createContext, useState } from "react";
 import {
   doc,
   deleteDoc,
+  deleteField,
   addDoc,
   getDocs,
   collection,
   query,
   orderBy,
   limit,
-  setDoc,
   updateDoc,
   arrayUnion,
-  arrayRemove,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { getAuth } from "firebase/auth";
@@ -36,6 +35,7 @@ export const NoteProvider = ({ children }) => {
     creatingAccount: false,
     postingTrack: false,
   });
+  const [displayNotes, setDisplayNotes] = useState(true);
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
 
   //Lift delete function to context to avoid error
@@ -74,27 +74,69 @@ export const NoteProvider = ({ children }) => {
         await deleteDoc(
           doc(db, "users", auth.currentUser.uid, "trackData", docuRef)
         );
-        // // get reference
-        // const tracksRef = collection(
-        //   db,
-        //   "users",
-        //   auth.currentUser.uid,
-        //   "trackData"
-        // );
-        // // create query
-        // const q = query(tracksRef, orderBy("timeStamp"), limit(10));
-        // // execute query
-        // const querySnap = await getDocs(q);
-        // querySnap.forEach((doc) => {
-        //   tempListOfTracks.unshift({ ...doc.data(), docRef: doc.id });
-        // });
-        // console.log(tempListOfTracks);
-        // setTracksData(tempListOfTracks);
+        setTrackPlaying({
+          isPlaying: false,
+          progress: null,
+          duration: 0,
+          title: "",
+          id: "",
+        });
         fetchTracks();
       } catch (error) {
         console.log(error);
       }
     }
+  };
+
+  //Function to delete Comment noteRef = trackDataRef
+
+  const handleCommentDelete = async (
+    comment,
+    id,
+    noteRef,
+    selectedID,
+    { noteComments },
+    setNoteComments
+  ) => {
+    const docuRef = selectedID;
+    let newNoteComments = [];
+
+    // remove comment using id from noteComments
+
+    newNoteComments = noteComments.filter((comment) => comment.id !== id);
+
+    // re set the whole comment field with new noteComments
+    if (auth.currentUser) {
+      try {
+        const commentTrackRef = doc(
+          db,
+          "users",
+          auth.currentUser.uid,
+          "trackData",
+          noteRef
+        );
+        await updateDoc(commentTrackRef, {
+          comments: newNoteComments,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    console.log(
+      "id = " + id,
+      "noteRef = " + noteRef,
+      "selectedID = " + selectedID,
+      noteComments
+    );
+    console.log(newNoteComments);
+    setNoteComments(newNoteComments);
+
+    // setTracksData with new data to update react app
+
+    // selectredID included to force reload of comments/set selectedID = selectedID at end of function
+
+    setSelectedID(selectedID);
   };
 
   // Function to add Track
@@ -122,7 +164,8 @@ export const NoteProvider = ({ children }) => {
     comment,
     trackRef,
     commentID,
-    commentTime
+    commentTime,
+    date
   ) => {
     if (auth.currentUser) {
       try {
@@ -138,6 +181,7 @@ export const NoteProvider = ({ children }) => {
             cTimeStamp: commentTime,
             comment: comment,
             id: commentID,
+            date: date,
           }),
         });
         console.log("done");
@@ -166,8 +210,10 @@ export const NoteProvider = ({ children }) => {
     setTrackPlaying,
     waveformReference,
     setWaveformReference,
+    displayNotes,
+    setDisplayNotes,
+    handleCommentDelete,
   };
-
   return (
     <NoteContext.Provider value={NoteContextObj}>
       {children}

@@ -2,3 +2,7 @@
   height: calc(100% - 100px);
   width: inherit;
 }
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

@@ -2,9 +2,13 @@ import React, { useState, useContext } from "react";
 import { NoteContext } from "../../context/NoteContext";
 import { v4 as uuidv4 } from "uuid";
 
-function NoteDisplayInput({ noteRef }) {
-  const { handlePublishComment } = useContext(NoteContext);
-  const commentTime = 0;
+function NoteDisplayInput({ noteRef, setNoteComments, selectedID }) {
+  const { handlePublishComment, waveformReference, tracksData, setTracksData } =
+    useContext(NoteContext);
+
+  // const cTimeStamp = 0;
+  console.log(tracksData);
+  const date = new Date();
   const [comment, setComment] = useState("");
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -12,9 +16,15 @@ function NoteDisplayInput({ noteRef }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const cTimeStamp = Math.round(waveformReference.current.getCurrentTime());
     const commentID = uuidv4();
-    handlePublishComment(comment, noteRef, commentID, commentTime);
+    handlePublishComment(comment, noteRef, commentID, cTimeStamp, date);
+
     setComment("");
+    setNoteComments((prev) => [
+      ...prev,
+      { cTimeStamp: cTimeStamp, comment: comment, id: commentID },
+    ]);
   };
 
   return (

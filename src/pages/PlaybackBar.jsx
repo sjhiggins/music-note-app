@@ -51,7 +51,9 @@ function PlaybackBar() {
   useEffect(() => {
     if (waveformReference) {
       // setting blue play bar width
-      progressBarRef.current.value = waveformReference.current.getCurrentTime();
+      progressBarRef.current.value = waveformReference.current.getCurrentTime()
+        ? waveformReference.current.getCurrentTime()
+        : 0;
       progressBarRef.current.style.setProperty(
         "--seek-before-width",
         `${
