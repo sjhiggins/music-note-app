@@ -1,0 +1,64 @@
+.vertical-slider {
+  --bar-bg: rgb(101, 101, 101);
+  --seek-before-width: 0;
+  --seek-before-color: #00c5cf;
+  --knobby: #00c5cf;
+  --selectedKnobby: rgb(255, 255, 255);
+  --sy: rgb(205, 205, 205);
+
+  /* appearance: slider-vertical; */
+  -webkit-appearance: slider-vertical;
+  position: relative;
+  right: 37px;
+  top: 38px;
+  transform: rotate(270deg);
+  width: 96px;
+  height: 3px;
+  appearance: none;
+  outline: none;
+  background: white;
+}
+
+.vertical-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 13px;
+  width: 13px;
+  z-index: 3;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--knobby);
+  /* background-color: white; */
+  /* background-color: rgb(209 213 219 / var(--tw-bg-opacity)); */
+  /* background-color: rgb(57 62 70 / var(--tw-bg-opacity)); */
+  cursor: pointer;
+  position: relative;
+  margin: 0px 0 0 0;
+}
+
+.vertical-slider::before {
+  content: "";
+  height: 4px;
+  width: var(--seek-before-width);
+  background-color: var(--knobby);
+  /* border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.slider-container {
+  width: 26px;
+  height: 104px;
+  bottom: 40px;
+  right: 30.6%;
+  position: absolute;
+  /* --tw-bg-opacity: 1; */
+  /* background-color: rgb(209 213 219 / var(--tw-bg-opacity)); */
+  background-color: rgb(238, 238, 238);
+  /* background-color: white; */
+  border: 2px solid rgba(101, 101, 101, 0.147);
+  border-bottom: none;
+  /* opacity: 90%; */
+}

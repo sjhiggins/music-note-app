@@ -47,7 +47,6 @@ function NoteDisplay() {
       setPaddingFix({ paddingRight: "86.4px" });
     }
   }, [windowWidth]);
-  console.log(noteComments);
   return (
     <div
       // key={paddingFix}
@@ -55,7 +54,7 @@ function NoteDisplay() {
       style={paddingFix}
     >
       <div className="p-4 bg-slate-200 w-full">
-        <div className=" font-medium opacity-90 h-6">{noteTitle}</div>
+        <div className=" font-medium opacity-90 titleBar">{noteTitle}</div>
       </div>
       <div className=" bg-slate-50 p-4 h-full mb-10 overflow-auto scrollbar-hide ">
         {noteComments

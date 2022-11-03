@@ -2,12 +2,11 @@ import React, { useState, useContext } from "react";
 import { NoteContext } from "../../context/NoteContext";
 import { v4 as uuidv4 } from "uuid";
 
-function NoteDisplayInput({ noteRef, setNoteComments, selectedID }) {
-  const { handlePublishComment, waveformReference, tracksData, setTracksData } =
+function NoteDisplayInput({ noteRef, setNoteComments }) {
+  const { handlePublishComment, waveformReference, tracksData } =
     useContext(NoteContext);
 
   // const cTimeStamp = 0;
-  console.log(tracksData);
   const date = new Date();
   const [comment, setComment] = useState("");
   const handleCommentChange = (e) => {

@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NoteContext } from "../../context/NoteContext";
-import Artwork from "./Artwork";
 import UtilityBar from "./UtilityBar";
 import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
 import { ReactComponent as PauseIcon } from "../../assets/pause-transparent-icon-v1-bg.svg";
@@ -54,6 +53,7 @@ function NoteItem({ title, id, trackData, audioURL }) {
     }));
     setSelectedID(id);
   };
+
   // handle if showing play or pause button for each track
   useEffect(() => {
     if (trackPlaying.trackRef === docRef && trackPlaying.isPlaying === true) {

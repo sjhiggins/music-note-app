@@ -9,6 +9,7 @@ function Navbar() {
   const { setIsCreatingNote, setAccountStatus, setDisplayNotes } =
     useContext(NoteContext);
   const { isLoggedIn, isCheckingLogStatus } = useContext(AuthContext);
+
   const handleSignIn = () => {
     setAccountStatus((prev) => ({
       ...prev,

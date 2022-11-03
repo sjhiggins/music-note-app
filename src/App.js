@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import Profile from "./pages/Profile";
-import NotesPlaceholder from "./pages/NotesPlaceholder";
+import NotesPlaceholder from "./components/UI/NotesPlaceholder";
 import LogIn from "./pages/LogIn";
 import YourNotes from "./pages/YourNotes";
-import PlaybackBar from "./pages/PlaybackBar";
+import PlaybackBar from "./components/PlaybackBar/PlaybackBar";
 import { NoteContext } from "./context/NoteContext";
 import { AuthContext } from "./context/AuthContext";
 import Navbar from "./components/Navbar/Navbar";
@@ -13,7 +13,6 @@ function App() {
   const { accountStatus, displayNotes } = useContext(NoteContext);
   const { signingIn, creatingAccount } = accountStatus;
   const { isCheckingLogStatus } = useContext(AuthContext);
-  console.log(displayNotes);
 
   // yournotes page ontop so play can transfer between pages. hiding using css when displaynotes is false
 

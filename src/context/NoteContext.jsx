@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import {
   doc,
   deleteDoc,
-  deleteField,
   addDoc,
   getDocs,
   collection,
@@ -21,6 +20,7 @@ export const NoteContext = createContext();
 export const NoteProvider = ({ children }) => {
   const [isCreatingNote, setIsCreatingNote] = useState(false);
   const [selectedID, setSelectedID] = useState(0);
+  const [globalVolume, setGlobalVolume] = useState(1);
   const [tracksData, setTracksData] = useState([]);
   const [trackPlaying, setTrackPlaying] = useState({
     isPlaying: false,
@@ -98,7 +98,7 @@ export const NoteProvider = ({ children }) => {
     { noteComments },
     setNoteComments
   ) => {
-    const docuRef = selectedID;
+    // const docuRef = selectedID;
     let newNoteComments = [];
 
     // remove comment using id from noteComments
@@ -213,6 +213,8 @@ export const NoteProvider = ({ children }) => {
     displayNotes,
     setDisplayNotes,
     handleCommentDelete,
+    setGlobalVolume,
+    globalVolume,
   };
   return (
     <NoteContext.Provider value={NoteContextObj}>

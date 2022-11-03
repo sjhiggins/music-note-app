@@ -1,25 +1,39 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import "../CSS/PlaybackBar.css";
-import useSecsToMins from "../components/hooks/useSecsToMins";
-import { NoteContext } from "../context/NoteContext";
-import { ReactComponent as TriangleIcon } from "../assets/triangle-transparent-bg.svg";
-import { ReactComponent as PauseIcon } from "../assets/pause-transparent-icon-v1-bg.svg";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+import "../../CSS/PlaybackBar.css";
+import useSecsToMins from "../hooks/useSecsToMins";
+import { NoteContext } from "../../context/NoteContext";
+import { ReactComponent as TriangleIcon } from "../../assets/triangle-transparent-bg.svg";
+import { ReactComponent as PauseIcon } from "../../assets/pause-transparent-icon-v1-bg.svg";
+import VolumeBar from "./VolumeBar";
 
 function PlaybackBar() {
-  const { trackPlaying, setTrackPlaying, waveformReference, setSelectedID } =
-    useContext(NoteContext);
+  const {
+    trackPlaying,
+    setTrackPlaying,
+    waveformReference,
+    setSelectedID,
+    globalVolume,
+  } = useContext(NoteContext);
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
   const [counter, setCounter] = useState(0);
+  const [showHide, setShowHide] = useState("hidden");
 
   const progressBarRef = useRef(); // reference to progress bar
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     setTrackPlaying((prev) => ({
       ...prev,
       isPlaying: !trackPlaying.isPlaying,
     }));
-  };
+    waveformReference.current.setVolume(globalVolume);
+  }, [globalVolume, trackPlaying, waveformReference, setTrackPlaying]);
 
   // increment time counter for playback when played per second
   useEffect(() => {
@@ -38,6 +52,7 @@ function PlaybackBar() {
     if (waveformReference) {
       setDuration(waveformReference.current.getDuration());
       setProgress(waveformReference.current.getCurrentTime());
+      // waveformReference.current.setVolume(globalVolume);
 
       //setting right hand side 3:43 of bar (duration)
       progressBarRef.current.max = waveformReference.current.getDuration();
@@ -47,6 +62,12 @@ function PlaybackBar() {
     waveformReference?.current?.readyState,
     waveformReference,
   ]);
+
+  useEffect(() => {
+    if (waveformReference) {
+      waveformReference.current.setVolume(globalVolume);
+    }
+  }, [waveformReference, globalVolume]);
   // setting correct duration and progress when counter ticks
   useEffect(() => {
     if (waveformReference) {
@@ -90,6 +111,37 @@ function PlaybackBar() {
   const handleTitleClick = () => {
     setSelectedID(trackPlaying.id);
   };
+
+  //when volume icon mouse over, displays volume bar
+
+  const displayVolume = () => {
+    console.log("over");
+    setShowHide("");
+  };
+  const hideVolume = () => {
+    console.log("out");
+    setShowHide("hidden");
+  };
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.keyCode === 32 && e.target === document.body) {
+        console.log(trackPlaying);
+        handlePlayPause();
+        window.onkeydown = function (e) {
+          return !(e.keyCode === 32 && e.target === document.body);
+        };
+
+        return;
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [trackPlaying, handlePlayPause]);
   return (
     <div className="mt-10">
       <div className="bottom-0 fixed z-20 w-full h-10 bg-primary-dark p-2 m-auto">
@@ -133,6 +185,11 @@ function PlaybackBar() {
               {useSecsToMins(duration)}
             </div>
           </div>
+          <VolumeBar
+            displayVolume={displayVolume}
+            showHide={showHide}
+            hideVolume={hideVolume}
+          />
           <div
             className="text-white text-xs px-2 w-64 overflow-hidden overflow-ellipsis h-5 whitespace-nowrap cursor-pointer relative top-[2px]"
             onClick={handleTitleClick}
